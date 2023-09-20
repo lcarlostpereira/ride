@@ -38,4 +38,27 @@ document.addEventListener("DOMContentLoaded", async () => {
   dataElement.appendChild(dateDiv)
 
   document.querySelector("#data").appendChild(dataElement)
+
+  const deleteButton = document.querySelector("#deleteBtn")
+  deleteButton.addEventListener("click", () => {
+    deleteRide(rideID)
+    window.location.href = "./"
+  })
+
+  const map = L.map("mapDetail")
+  map.setView([firstPosition.latitude, firstPosition.longitude], 13)
+
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  }).addTo(map)
+
+  const positionsArray = ride.data.map((position) => {
+    return [position.latitude, position.longitude]
+  })
+
+  const polyline = L.polyline(positionsArray, { color: "blue" }).addTo(map)
+
+  map.fitBounds(polyline.getBounds())
 })
